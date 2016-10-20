@@ -28,7 +28,6 @@ Usage:
 O script é baseado nos parâmetros DSRoot, DSPath e ImageName.
 DSRoot = Caminho local para o DeploymentShare (Ex.: C:\DeploymentShare)
 DSPath = Referencia o PSDrive definido na criação do DeploymentShare (Ex.: DS001)
-ImageName = Nome que será usado na imagem dentro do WDS Server
 Force = Força a recriação das imagens de boot do MDT
 #>
 
@@ -37,9 +36,7 @@ Force = Força a recriação das imagens de boot do MDT
         $DSRoot,
     [Parameter(Mandatory=$true,Position=2)]
         $DSPath,
-    #[Parameter(Mandatory=$true,Position=3)]
-        #$ImageName,
-    [Parameter(Mandatory=$false,Position=4)]
+    [Parameter(Position=3)]
         $force
 )
 
@@ -88,7 +85,7 @@ else
     }
 
 #Testando se a feature WDS está instalada
-If ($Feature = Get-WindowsFeature -Name *WDS* | Where-Object {$_.Installed -eq "$true"})
+If (Get-WindowsFeature -Name *WDS* | Where-Object {$_.Installed -eq "$true"})
 {
     Write-Output "Feature WDS instalada, Verificando se o serviço está em execução"
     #Verificando se o serviço WDSServer está executando
