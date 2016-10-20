@@ -66,14 +66,14 @@ $MDTProperty = Get-ItemProperty -Path "$($DSPath):"
 
 #Definindo Variavéis
 $WDSServer = $env:COMPUTERNAME
-$MDTBootx64 = "$($DSRoot)\Boot\LiteTouchPE_x64.wim"                    #Arquivo .wim gerado pelo MDT
-$MDTBootx86 = "$($DSRoot)\Boot\LiteTouchPE_x86.wim"                    #Arquivo .wim gerado pelo MDT
-$MDTImageNamex64 = $MDTProperty.'Boot.x64.LiteTouchWIMDescription'     #Nome da Imagem de Boot do MDT (wim file)  
-$MDTImageNamex86 = $MDTProperty.'Boot.x86.LiteTouchWIMDescription'     #Nome da Imagem de Boot do MDT (wim file)
-$WDSWIMFileNamex64 = $MDTProperty.Description + "_x64.wim"                           #Novo nome do aquivo Wim no WDS Server
-$WDSWIMFileNamex86 = $MDTProperty.Description + "_x86.wim"                           #Novo nome do aquivo Wim no WDS Server
-$WDSImageNamex64 = $MDTProperty.Description + "(x64)"                                #Nome da imagem de Boot no Servidor WDS
-$WDSImageNamex86 = $MDTProperty.Description + "(x86)"                                #Nome da imagem de Boot no Servidor WDS
+$MDTBootx64 = "$($DSRoot)\Boot\LiteTouchPE_x64.wim"                                   #Arquivo .wim gerado pelo MDT
+$MDTBootx86 = "$($DSRoot)\Boot\LiteTouchPE_x86.wim"                                   #Arquivo .wim gerado pelo MDT
+$MDTImageNamex64 = $MDTProperty.'Boot.x64.LiteTouchWIMDescription'                    #Nome da Imagem de Boot do MDT (wim file)  
+$MDTImageNamex86 = $MDTProperty.'Boot.x86.LiteTouchWIMDescription'                    #Nome da Imagem de Boot do MDT (wim file)
+$WDSWIMFileNamex64 = ($MDTProperty.Description).Replace(' ','') + "_x64.wim"          #Novo nome do aquivo Wim no WDS Server
+$WDSWIMFileNamex86 = ($MDTProperty.Description).Replace(' ','') + "_x86.wim"          #Novo nome do aquivo Wim no WDS Server
+$WDSImageNamex64 = $MDTProperty.Description + " (x64)"                                #Nome da imagem de Boot no Servidor WDS
+$WDSImageNamex86 = $MDTProperty.Description + " (x86)"                                #Nome da imagem de Boot no Servidor WDS
 
 #Atualiza Deployment Share
 if ($force -eq $true)
@@ -112,25 +112,39 @@ If (Get-WdsBootImage -ImageName $WDSImageNamex86)
 {
     Write-Output "Imagem Encontrada... Iniciando Replace Imagem de Boot x86."
     WDSUTIL /Verbose /replace-image /image:$WDSImageNamex86 /ImageType:Boot /Architecture:x86 /ReplacementImage /ImageFile:$MDTBootx86 /Server:$WDSServer
-    Set-WdsBootImage -ImageName $MDTImageNamex86 -NewImageName $WDSImageNamex86 -NewDescription $WDSImageNamex86 -Architecture x86 -DisplayOrder "500000" -Verbose
+    Set-WdsBootImage -ImageName $MDTImageNamex86 -NewImageName $WDSImageNamex86 -NewDescription $WDSImageNamex86 -Architecture x86 -Verbose
 }
 else
 {
-    Write-Output "Imagem não Encontrada... Importando imagem de boot x86."
-    Import-WdsBootImage -Path $MDTBootx86 -NewImageName $WDSImageNamex86 -NewFileName $WDSWIMFileNamex86 -NewDescription $WDSImageNamex86 -DisplayOrder "500000" -Verbose
+    If ($MDTProperty.SupportX86 -eq $true)
+    {
+        Write-Output "Imagem não Encontrada... Importando imagem de boot x86."
+        Import-WdsBootImage -Path $MDTBootx86 -NewImageName $WDSImageNamex86 -NewFileName $WDSWIMFileNamex86 -NewDescription $WDSImageNamex86 -Verbose
+    }
+    else
+    {
+        Write-Output "MDT Boot Image x86 nao definida"
+    }
 }
 
 #Importando Imagem de Boot x64
 If (Get-WdsBootImage -ImageName $WDSImageNamex64) 
 {
     Write-Output "Imagem Encontrada... Iniciando Replace da Imagem de Boot x64."
-    WDSUTIL /Verbose /replace-image /image:$WDSImageNamex64 /ImageType:Boot /Architecture:x64 /ReplacementImage /ImageFile:$MDTBootx64 /Server:$WDSServer
-    Set-WdsBootImage -ImageName $MDTImageNamex64 -NewImageName $WDSImageNamex64 -NewDescription $WDSImageNamex64 -Architecture x64 -DisplayOrder "500000" -Verbose
+    WDSUTIL /verbose /replace-image /image:$WDSImageNamex64 /ImageType:Boot /Architecture:x64 /ReplacementImage /ImageFile:$MDTBootx64 /Server:$WDSServer
+    Set-WdsBootImage -ImageName $MDTImageNamex64 -NewImageName $WDSImageNamex64 -NewDescription $WDSImageNamex64 -Architecture x64 -Verbose
 } 
 else
 {
-    Write-Output "Imagem não Encontrada... Importando imagem de boot x64."
-    Import-WdsBootImage -Path $MDTBootx64 -NewImageName $WDSImageNamex64 -NewFileName $WDSWIMFileNamex64 -NewDescription $WDSImageNamex64 -DisplayOrder "500000" -Verbose
+If ($MDTProperty.SupportX64 -eq $true)
+    {
+        Write-Output "Imagem não Encontrada... Importando imagem de boot x64."
+        Import-WdsBootImage -Path $MDTBootx64 -NewImageName $WDSImageNamex64 -NewFileName $WDSWIMFileNamex64 -NewDescription $WDSImageNamex64 -Verbose
+    }
+    else
+    {
+        Write-Output "MDT Boot Image x86 nao definida"
+    } 
 }
 
 Stop-Transcript
