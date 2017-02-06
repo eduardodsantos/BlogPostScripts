@@ -11,7 +11,7 @@
 ' //
 ' // File:      ZTIGather.wsf
 ' // 
-' // Version:   6.3.8330.1000
+' // Version:   6.3.8443.1000
 ' // 
 ' // Purpose:   Gather information and process rules controlling deployment
 ' //            process.
@@ -837,6 +837,18 @@ Class ZTIGather
 				sSKU = "ULTIMATEE"
 			Case "74"
 				sSKU = "PRERELEASE"
+			Case "78"
+				sSKU = "ENTERPRISEEVAL"
+			Case "121"
+				sSKU = "EDUCATION"
+			Case "122"
+				sSKU = "EDUCATIONN"
+			Case "125"
+				sSKU = "ENTERPRISES"
+			Case "126"
+				sSKU = "ENTERPRISESN"
+			Case "129"
+				sSKU = "ENTERPRISESEVAL"
 			Case else
 				oLogging.CreateEntry "Unknown OS SKU = " & sOperatingSystemSKU, LogTypeInfo
 			End Select
