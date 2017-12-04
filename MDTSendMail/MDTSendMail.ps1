@@ -20,6 +20,7 @@ $SmtpUser = 'alertas@deploymentinsider.blog.br'
 $smtpPwd = '********'
 $MailTo = 'alertas@deploymentinsider.blog.br'
 $MailFrom = 'alertas@deploymentinsider.blog.br'
+$MDTServerName = 'ESN-MDT01'
 $MailSubject = "[MDT] Notificação do processo OS Deployment - PC $env:COMPUTERNAME"
 
 
@@ -48,7 +49,7 @@ Function Get-MDTOData{
         http://www.deploymentbunny.com 
     #>
     Param(
-    $MDTMonitorServer
+    $MDTMonitorServer = $MDTServerName
     ) 
     $URL = "http://" + $MDTMonitorServer + ":9801/MDTMonitorData/Computers"
     $Data = Invoke-RestMethod $URL
@@ -82,7 +83,7 @@ Function Get-MDTOData{
     }
 } 
 
-$Property = (Get-MDTOData -MDTMonitorServer UESMGM-01V) | Where-Object {$_.Name -eq "$env:ComputerName"}
+$Property = (Get-MDTOData -MDTMonitorServer $MDTServerName) | Where-Object {$_.Name -eq "$env:ComputerName"}
 
 #========================================================================================================##
 
