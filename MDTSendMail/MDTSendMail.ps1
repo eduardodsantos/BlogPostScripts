@@ -17,7 +17,7 @@
 Write-Progress -Activity "Enviado email" -Status "Obtendo Informações" -PercentComplete 25 -Id 1 
 $SmtpServer = 'smtp.office365.com'
 $SmtpUser = 'alertas@deploymentinsider.blog.br'
-$smtpPwd = 'ZK68b5Ka'
+$smtpPwd = '********'
 $MailTo = 'alertas@deploymentinsider.blog.br'
 $MailFrom = 'alertas@deploymentinsider.blog.br'
 $MailSubject = "[MDT] Notificação do processo OS Deployment - PC $env:COMPUTERNAME"
