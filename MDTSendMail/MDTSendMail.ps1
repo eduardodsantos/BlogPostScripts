@@ -109,6 +109,6 @@ Finalizado: $($property.LastTime)
 Write-Progress -Activity "Enviando e-mail" -Status "Enviando e-mail para $MailTo" -PercentComplete 75 -Id 1 
 
 $Credentials = New-Object System.Management.Automation.PSCredential -ArgumentList $SmtpUser, $($smtpPwd | ConvertTo-SecureString -AsPlainText -Force) 
-Send-MailMessage -To "$MailTo" -from "$MailFrom" -Subject $MailSubject -Body $MailBody -Encoding UTF8 -Attachments "$tsenv:LogPath\BDD.log" -SmtpServer $SmtpServer -UseSsl -Credential $Credentials
+Send-MailMessage -To "$MailTo" -from "$MailFrom" -Subject $MailSubject -Body $MailBody -Encoding UTF8 -Attachments "$tsenv:LogPath\BDD.log" -SmtpServer $SmtpServer -port 587 -UseSsl -Credential $Credentials
 
 Write-Progress -Activity "Enviando e-mail" -Status "Enviado com Sucesso" -PercentComplete 100 -Id 1
