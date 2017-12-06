@@ -56,11 +56,11 @@ Function Get-MDTOData{
     foreach($property in ($Data.content.properties) ){
         $Hash =  [ordered]@{ 
             Name = $($property.Name); 
-            PercentComplete = $($property.PercentComplete.’#text’); 
-            Warnings = $($property.Warnings.’#text’); 
-            Errors = $($property.Errors.’#text’); 
+            PercentComplete = $($property.PercentComplete.'#text'); 
+            Warnings = $($property.Warnings.'#text'); 
+            Errors = $($property.Errors.'#text'); 
             DeploymentStatus = $( 
-            Switch($property.DeploymentStatus.’#text’){ 
+            Switch($property.DeploymentStatus.'#text'){ 
                 1 { "Active/Running"} 
                 2 { "Failed"} 
                 3 { "Successfully completed"} 
@@ -76,8 +76,8 @@ Function Get-MDTOData{
             VMHost = $($property.VMHost.'#text');
             VMName = $($property.VMName.'#text');
             LastTime = $($property.LastTime.'#text') -replace "T"," ";
-            StartTime = $($property.StartTime.’#text’) -replace "T"," "; 
-            EndTime = $($property.EndTime.’#text’) -replace "T"," "; 
+            StartTime = $($property.StartTime.'#text') -replace "T"," "; 
+            EndTime = $($property.EndTime.'#text') -replace "T"," "; 
             }
         New-Object PSObject -Property $Hash
     }
