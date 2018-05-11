@@ -1,0 +1,19 @@
+<Wizard>
+  <Global>
+    <CustomScript>DeployWiz_ServerMaintenance.vbs</CustomScript>
+  </Global>
+  <Pane id="ServerMaintenance" title="Server Maintenance">
+    <Body><![CDATA[<Center>
+					<i><H1>Este servidor está em manutenção programada.</H1></i></br>
+					<table>
+						<tr>
+							<td>
+								<img src="img_servermaintenance.png"  height="236" width="341">
+							</td>
+						</tr>				
+					</table>
+				</center>]]></Body>
+    <Condition><![CDATA[UCase(Property("ServerMaintenance"))="YES"]]></Condition>
+    <HideBackNext>true</HideBackNext>
+  </Pane>
+</Wizard>
