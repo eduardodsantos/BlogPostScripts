@@ -1,0 +1,33 @@
+<Wizard>
+  <Global>
+  </Global>
+  <Pane id="OnBattery" title="Battery in Use">
+	<Body><![CDATA[<center>
+					<table>
+ 						<Style>
+						.NavigationArea {display: none;}
+						.ContentArea {
+							horizontal-align: center;
+							width: auto;
+						}
+						</Style>					
+						<tr>
+							<td>
+								<center><H1 style="color:Red;">Notebook não está conectado ao carregador.</H1>
+								<h2 style="color:#08088A;font-family: Arial Black;"> Conecte o carregador e reinicie o Deployment!</h2>
+								<img src="PowerCableConnect.gif" height="268" width="400"></br></center>
+							</td>
+						</tr>				
+					</table>
+						<tr>
+							<td>
+								<center><p>Desenvolvido por:</br>
+								<img src="esena.png"></p></center>
+							</td>
+						</tr>				
+					</table>					
+				</center>]]></Body>
+    <Condition><![CDATA[UCase(Property("PowerCableOff"))="TRUE"]]></Condition>
+    <HideBackNext>true</HideBackNext>
+  </Pane>
+</Wizard>
